@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketLight.Core", "TicketLight.Core\TicketLight.Core.csproj", "{0F3133BE-4915-401F-882E-DB538067252D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketLight.Api", "TicketLight.Api\TicketLight.Api.csproj", "{0805C919-20AC-4B7A-8B8F-DDAA27F22B02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketLight.OpenApi", "TicketLight.OpenApi\TicketLight.OpenApi.csproj", "{1D1D2167-7FC3-409F-BF7C-E64892E820C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F3133BE-4915-401F-882E-DB538067252D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F3133BE-4915-401F-882E-DB538067252D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F3133BE-4915-401F-882E-DB538067252D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F3133BE-4915-401F-882E-DB538067252D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0805C919-20AC-4B7A-8B8F-DDAA27F22B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0805C919-20AC-4B7A-8B8F-DDAA27F22B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0805C919-20AC-4B7A-8B8F-DDAA27F22B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0805C919-20AC-4B7A-8B8F-DDAA27F22B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1D2167-7FC3-409F-BF7C-E64892E820C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1D2167-7FC3-409F-BF7C-E64892E820C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1D2167-7FC3-409F-BF7C-E64892E820C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1D2167-7FC3-409F-BF7C-E64892E820C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
