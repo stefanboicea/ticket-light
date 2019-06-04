@@ -9,6 +9,6 @@ import { TicketService } from './api/api';
 export class AppComponent {
   title = 'ticket-light-client';
   constructor(ticketService: TicketService) {
-    ticketService.listTicket().subscribe(results => console.log(results));
+    ticketService.listTicket(3,4,undefined,`Priority eq 1`).subscribe(results => console.log(results));
   }
 }

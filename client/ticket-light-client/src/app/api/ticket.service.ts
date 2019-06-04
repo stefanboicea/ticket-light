@@ -6,8 +6,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { CollectionOfTicket } from '../model/collectionOfTicket';
-import { OdataError } from '../model/odataError';
+import { ApiResponse } from '../model/apiResponse';
 import { Ticket } from '../model/ticket';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -211,9 +210,9 @@ export class TicketService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<CollectionOfTicket>;
-    public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CollectionOfTicket>>;
-    public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CollectionOfTicket>>;
+    public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<ApiResponse>;
+    public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ApiResponse>>;
+    public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ApiResponse>>;
     public listTicket(top?: number, skip?: number, search?: string, filter?: string, count?: boolean, orderby?: Array<string>, select?: Array<string>, expand?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -271,7 +270,7 @@ export class TicketService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<CollectionOfTicket>(`${this.basePath}/Tickets`,
+        return this.httpClient.get<ApiResponse>(`${this.basePath}/Tickets`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

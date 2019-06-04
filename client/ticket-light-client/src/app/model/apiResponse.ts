@@ -11,6 +11,9 @@
  */import { Ticket } from './ticket';
 
 
-export interface CollectionOfTicket { 
-    value?: Array<Ticket>;
+export interface ApiResponse { 
+    tickets?: Array<Ticket>;
+    ticket?: Ticket;
+    internalStatusCode?: number;
+    message: string;
 }
