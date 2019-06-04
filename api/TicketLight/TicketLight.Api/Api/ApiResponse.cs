@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OData;
@@ -28,7 +29,7 @@ namespace TicketLight.Api
             this.Message = exception.Message;
         }
 
-        public ApiResponse(IEnumerable<Ticket> tickets)
+        public ApiResponse(IEnumerable tickets)
         {
             this.Tickets = tickets;
         }
@@ -42,7 +43,7 @@ namespace TicketLight.Api
 
         public Ticket Ticket { get; set; }
 
-        public IEnumerable<Ticket> Tickets { get; set; }
+        public IEnumerable Tickets { get; set; }
 
         public string Message { get; set; }
 
