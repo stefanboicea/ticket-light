@@ -21,6 +21,8 @@ namespace TicketLight.Api
 {
     public class Startup
     {
+        readonly string AllowLocalHostOrigins = "_allowLocalHost";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,6 +36,17 @@ namespace TicketLight.Api
             services.AddDbContext<TicketsContext>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddOData();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowLocalHostOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod(); ;
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +61,8 @@ namespace TicketLight.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors(AllowLocalHostOrigins);
 
             app.UseHttpsRedirection();
             app.UseMvc(builder =>
