@@ -9,6 +9,10 @@ import { BASE_PATH } from './variables';
 import { environment } from '../environments/environment';
 import { ErrorInterceptor } from './interceptors/error-interceptor';
 import { Broadcaster } from './core/broadcaster';
+import { MaterialModule } from './material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SearchModule } from './search/search.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -18,7 +22,11 @@ import { Broadcaster } from './core/broadcaster';
     BrowserModule,
     HttpClientModule,
     ApiModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MaterialModule,
+    BrowserAnimationsModule,
+    SearchModule,
+    FlexLayoutModule
   ],
   providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },

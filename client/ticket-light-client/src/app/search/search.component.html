@@ -1,3 +1,62 @@
-<p>
-  search works!
-</p>
+<div  fxLayout="column" fxFlex="70" fxLayoutAlign="center center" fxFlexOffset="15">
+<mat-card style="width:100%">
+  <mat-card-title>
+    <p>Search tickets</p>
+  </mat-card-title>
+
+  <mat-card-content>
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" >
+      
+
+        <mat-form-field  fxFlex="50" style="padding-right:10px;padding-left:10px" >
+          <input matInput placeholder="Summary" [(ngModel)]="summaryFilter" class="mat-color-primary">
+
+        </mat-form-field>
+        <mat-form-field class="pl-xs pr-xs" fxFlex="50">
+          <input matInput placeholder="Summary" [(ngModel)]="summaryFilter" class="mat-color-primary">
+
+        </mat-form-field>
+
+    
+    </div>
+
+    <!-- <button matSuffix mat-button mat-raised-button color="primary" (click)="search()">
+          <mat-icon>search</mat-icon>Search
+      </button> -->
+  </mat-card-content>
+  <mat-card-footer>
+    <div fxLayout="column" fxFlex="100" fxLayoutAlign="center center">
+      <mat-progress-bar color="primary" mode="indeterminate">
+      </mat-progress-bar>
+    </div>
+  </mat-card-footer>
+</mat-card>
+
+
+<br>
+
+  <mat-card style="width:100%">
+    <mat-card-content>
+      <h3>Found 3 tickets</h3>
+      <!-- <mat-divider></mat-divider> -->
+      <mat-nav-list>
+        <a mat-list-item>
+          <mat-icon mat-list-icon color="primary">folder</mat-icon>
+
+          <span mat-line class="claim-file"> Test
+          </span>
+
+          <mat-chip-list>
+            <mat-chip color="amber">Status</mat-chip>
+          </mat-chip-list>
+
+          <p mat-line>Some other info </p>
+          <p mat-line> </p>
+
+          <mat-divider></mat-divider>
+        </a>
+      </mat-nav-list>
+    </mat-card-content>
+  </mat-card>
+
+</div>
