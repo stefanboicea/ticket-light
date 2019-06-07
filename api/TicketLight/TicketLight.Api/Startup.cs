@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Routing.Conventions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OData;
 using Microsoft.OData.Edm;
+using Microsoft.OData.UriParser;
 using TicketLight.Core.DataAccess;
 using TicketLight.Core.Entities;
 
@@ -69,7 +72,13 @@ namespace TicketLight.Api
             {
                 builder.EnableDependencyInjection();
                 builder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-                builder.MapODataServiceRoute("odata", "api", GetEdmModel());
+
+                builder.MapODataServiceRoute("odata", "api", config => config
+                        .AddService(Microsoft.OData.ServiceLifetime.Singleton, sp => GetEdmModel())
+                        .AddService<IEnumerable<IODataRoutingConvention>>(Microsoft.OData.ServiceLifetime.Singleton, sp => ODataRoutingConventions.CreateDefaultWithAttributeRouting("odata", (Microsoft.AspNetCore.Routing.IRouteBuilder)config))
+                        .AddService(Microsoft.OData.ServiceLifetime.Singleton, sp => new StringAsEnumResolver { EnableCaseInsensitive = true }));
+
+
             });
         }
 
@@ -77,8 +86,8 @@ namespace TicketLight.Api
         {
             var builder = new ODataConventionModelBuilder();
 
-            builder.AddEnumType(typeof(TicketResolution));
-            builder.AddEnumType(typeof(TicketPriority));
+            //builder.AddEnumType(typeof(TicketResolution));
+            //builder.AddEnumType(typeof(TicketPriority));
             builder.EntitySet<Member>("Members");
             builder.EntitySet<Ticket>("Tickets");
 
