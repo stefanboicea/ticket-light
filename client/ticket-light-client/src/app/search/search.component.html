@@ -1,4 +1,3 @@
-
 <div fxLayout="column" fxFlex="70" fxLayoutAlign="center center" fxFlexOffset="15">
 
   <mat-card style="width:100%">
@@ -46,7 +45,7 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center">
         <mat-form-field class="pl-xs pr-xs" fxFlex="100">
-          <input matInput placeholder="Summary may contain..." [(ngModel)]="summaryFilter" class="mat-color-primary">
+          <input matInput placeholder="Summary may contain..." [formControl]="summaryControl" class="mat-color-primary">
         </mat-form-field>
       </div>
 
@@ -56,8 +55,8 @@
           <mat-icon>search</mat-icon>Search
         </button>
 
-        <button mat-raised-button class="ml-xs" [color]="red" (click)="resetParameters()">Clear filters
-            <mat-icon>clear</mat-icon>
+        <button mat-raised-button class="ml-xs" [color]="red" (click)="reset()">Clear filters
+          <mat-icon>clear</mat-icon>
         </button>
       </div>
 
@@ -75,25 +74,11 @@
 
   <mat-card style="width:100%">
     <mat-card-content>
-      <h3>Found 3 tickets</h3>
+      <h3>Found 3 tickets matching the criteria</h3>
       <mat-divider></mat-divider>
-      <mat-nav-list>
-        <a mat-list-item>
-          <mat-icon mat-list-icon color="primary">folder</mat-icon>
-
-          <span mat-line class="claim-file"> Test
-          </span>
-
-          <mat-chip-list>
-            <mat-chip color="amber">Status</mat-chip>
-          </mat-chip-list>
-
-          <p mat-line>Some other info </p>
-          <p mat-line> </p>
-
-          <mat-divider></mat-divider>
-        </a>
-      </mat-nav-list>
+      <app-ticket-list [tickets]="tickets"></app-ticket-list>
+      <mat-paginator [length]="3" [pageSize]="5" (page)="pageEvent = $event">
+      </mat-paginator>
     </mat-card-content>
   </mat-card>
 

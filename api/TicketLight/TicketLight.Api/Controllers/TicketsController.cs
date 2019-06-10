@@ -51,8 +51,6 @@ namespace TicketLight.Api
             IQueryable tickets = queryOptions.ApplyTo(_ticketsContext.Tickets.AsQueryable());
 
             return StatusCode(StatusCodes.Status200OK, new ApiResponse(tickets));
-
-
         }
 
 
@@ -68,6 +66,7 @@ namespace TicketLight.Api
             */
 
             var apiResponse = new ApiResponse();
+
             return StatusCode(StatusCodes.Status200OK, apiResponse);
         }
 
