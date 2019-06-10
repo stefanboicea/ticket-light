@@ -6,4 +6,6 @@ export interface ApiResponse {
     ticket?: Ticket;
     internalStatusCode?: number;
     message: string;
+    totalCount?: number;
+    pageSize?: number;
 }

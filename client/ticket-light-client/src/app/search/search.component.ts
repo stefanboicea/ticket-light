@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import filterBuilder from 'odata-filter-builder';
+import { PageEvent } from '@angular/material';
 
 @Component({
   selector: 'app-search',
@@ -53,15 +54,37 @@ export class SearchComponent implements OnInit {
   resolutionControl = new FormControl();
   summaryControl = new FormControl();
   
+  loading:boolean = false;
+  totalCount:number = 0;
+  pageSize:number = 6;
+  filter:string = undefined;
 
   constructor(public ticketService: TicketService) {
-    this.ticketService.listTicket(3, 4, undefined, undefined,true)
+    this.loading = true;
+    this.filter = filterBuilder().eq('Priority', 'High').toString();
+    this.ticketService.listTicket(this.pageSize,undefined,undefined,this.filter)
     .subscribe(response => {
+      console.log(response);
+
       this.tickets = response.tickets;
-    });
+      this.totalCount = response.totalCount;
+      this.pageSize = response.pageSize;
+    },
+    );
 
   }
 
+  pageChanged($event:PageEvent) {
+    this.ticketService.listTicket(this.pageSize,$event.pageIndex,undefined,this.filter)
+    .subscribe(response => {
+      console.log(response);
+
+      this.tickets = response.tickets;
+      this.totalCount = response.totalCount;
+      this.pageSize = response.pageSize;
+    },
+    );
+  }
 
   search() {
     console.log(this.asigneeControl.value);
@@ -69,7 +92,18 @@ export class SearchComponent implements OnInit {
     console.log(this.priorityControl.value);
     console.log(this.summaryControl.value);
 
+    this.loading = true;
+
     const filter = filterBuilder().eq('Priority', 'High').toString();
+    this.ticketService.listTicket(3,3,undefined,filter,true)
+    .subscribe(response => {
+      console.log(response);
+      this.loading = false;
+
+      this.tickets = response.tickets;
+      this.totalCount = response.totalCount;
+    },
+    );
     
   }
 

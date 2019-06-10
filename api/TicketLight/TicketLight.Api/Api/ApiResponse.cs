@@ -34,6 +34,13 @@ namespace TicketLight.Api
             this.Tickets = tickets;
         }
 
+        public ApiResponse(IEnumerable tickets,int count,int pageSize)
+        {
+            this.Tickets = tickets;
+            this.TotalCount = count;
+            this.PageSize = pageSize;
+        }
+
         public ApiResponse(ApiStatusCode internalStatusCode)
         {
             this.InternalStatusCode = internalStatusCode;
@@ -44,6 +51,10 @@ namespace TicketLight.Api
         public Ticket Ticket { get; set; }
 
         public IEnumerable Tickets { get; set; }
+
+        public int TotalCount { get; set; }
+
+        public int PageSize { get; set; }
 
         public string Message { get; set; }
 

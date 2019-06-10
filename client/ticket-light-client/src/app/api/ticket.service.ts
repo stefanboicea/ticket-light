@@ -6,8 +6,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { ApiResponse } from '../model/apiResponse';
-import { Ticket } from '../model/ticket';
+import { ApiResponse } from '../model/models';
+import { Ticket } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';

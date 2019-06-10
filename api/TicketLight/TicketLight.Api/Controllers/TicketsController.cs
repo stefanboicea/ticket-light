@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNet.OData;
@@ -32,7 +33,7 @@ namespace TicketLight.Api
              *  Perform server-driven pagination accordingly            
              * Cache items when possible: 
              * - Use a request param to have clients specify if cache flushing is needed
-             * - Have a server constant that forces the clients to invalidate the cache             
+             * - Have a server constant that forces clients to invalidate the cache             
             */
 
         [HttpGet]
@@ -48,9 +49,19 @@ namespace TicketLight.Api
                 return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(exception));
             }
 
-            IQueryable tickets = queryOptions.ApplyTo(_ticketsContext.Tickets.AsQueryable());
+            int totalCount = 0;
+            IQueryable<Ticket> tickets = _ticketsContext.Tickets.AsQueryable();
 
-            return StatusCode(StatusCodes.Status200OK, new ApiResponse(tickets));
+            if (queryOptions.Filter != null)
+            {
+                 tickets = (IQueryable<Ticket>)queryOptions.Filter.ApplyTo(tickets, new ODataQuerySettings());
+                totalCount = tickets.Count();
+            }
+
+            tickets = (IQueryable<Ticket>)queryOptions.ApplyTo(tickets);
+
+
+            return StatusCode(StatusCodes.Status200OK, new ApiResponse(tickets, totalCount,10));
         }
 
 
