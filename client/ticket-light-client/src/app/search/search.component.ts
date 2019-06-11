@@ -6,11 +6,13 @@ import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import filterBuilder from 'odata-filter-builder';
 import { PageEvent } from '@angular/material';
+import { SearchService } from './search.service';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrls: ['./search.component.css'],
+  providers: [SearchService]
 })
 export class SearchComponent implements OnInit {
   members: Member[] = [
@@ -45,7 +47,7 @@ export class SearchComponent implements OnInit {
     { id: 2, name: 'High' }
   ];
 
-  tickets:Ticket[];
+  tickets: Ticket[];
 
 
   asigneeControl = new FormControl();
@@ -53,58 +55,51 @@ export class SearchComponent implements OnInit {
   priorityControl = new FormControl();
   resolutionControl = new FormControl();
   summaryControl = new FormControl();
-  
-  loading:boolean = false;
-  totalCount:number = 0;
-  pageSize:number = 6;
-  filter:string = undefined;
 
-  constructor(public ticketService: TicketService) {
-    this.loading = true;
-    this.filter = filterBuilder().eq('Priority', 'High').toString();
-    this.ticketService.listTicket(this.pageSize,undefined,undefined,this.filter)
-    .subscribe(response => {
-      console.log(response);
+  loading: boolean = false;
+  totalCount: number = 0;
+  pageSize: number = 6;
+  filter: string = undefined;
 
-      this.tickets = response.tickets;
-      this.totalCount = response.totalCount;
-      this.pageSize = response.pageSize;
-    },
-    );
-
+  constructor(public searchService: SearchService) {
   }
 
-  pageChanged($event:PageEvent) {
-    this.ticketService.listTicket(this.pageSize,$event.pageIndex,undefined,this.filter)
-    .subscribe(response => {
-      console.log(response);
-
-      this.tickets = response.tickets;
-      this.totalCount = response.totalCount;
-      this.pageSize = response.pageSize;
-    },
-    );
+  pageChanged($event: PageEvent) {
+    this.searchService.search(this.pageSize, $event.pageIndex * this.pageSize, this.filter)
+      .subscribe(response => {
+        this.tickets = response.tickets;
+      },
+        () => { },
+        () => this.loading = false);
   }
 
   search() {
-    console.log(this.asigneeControl.value);
-    console.log(this.reporterControl.value);
-    console.log(this.priorityControl.value);
-    console.log(this.summaryControl.value);
+    let andFilterBuilder = filterBuilder('and');
+    if (this.asigneeControl.value) {
+      andFilterBuilder = andFilterBuilder.eq('AsigneeId', this.asigneeControl.value.id);
+    }
+    if (this.reporterControl.value) {
+      andFilterBuilder = andFilterBuilder.eq('ReporterId', this.reporterControl.value.id);
+    }
+    if (this.priorityControl.value) {
+      andFilterBuilder = andFilterBuilder.eq('Priority', this.priorityControl.value.name);
+    }
+    if (this.resolutionControl.value) {
+      andFilterBuilder = andFilterBuilder.eq('Resolution', this.resolutionControl.value.name);
+    }
+    this.filter = andFilterBuilder.toString();
 
     this.loading = true;
+    this.searchService.search(this.pageSize, undefined, this.filter)
+      .subscribe(response => {
+        this.loading = false;
+        this.pageSize = response.pageSize;
+        this.tickets = response.tickets;
+        this.totalCount = response.totalCount;
+      },
+        () => { },
+        () => this.loading = false);
 
-    const filter = filterBuilder().eq('Priority', 'High').toString();
-    this.ticketService.listTicket(3,3,undefined,filter,true)
-    .subscribe(response => {
-      console.log(response);
-      this.loading = false;
-
-      this.tickets = response.tickets;
-      this.totalCount = response.totalCount;
-    },
-    );
-    
   }
 
   reset() {
@@ -113,6 +108,7 @@ export class SearchComponent implements OnInit {
     this.priorityControl.reset();
     this.resolutionControl.reset();
     this.summaryControl.reset();
+    this.filter = undefined;
   }
 
 
@@ -146,12 +142,4 @@ export class SearchComponent implements OnInit {
       new RegExp(`^${filterValue}`, 'gi')
         .test(option.fullName));
   }
-
-
-
-  memberDisplay(member): string {
-    return member ? member.name : '';
-  }
-
-  
 }

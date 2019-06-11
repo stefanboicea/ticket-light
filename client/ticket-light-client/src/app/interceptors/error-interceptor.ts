@@ -1,3 +1,4 @@
+import {ApiResponse} from '../model/models';
 import { Injectable, Injector } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import {
@@ -22,13 +23,9 @@ export class ErrorInterceptor implements HttpInterceptor {
             tap(
                 (event: HttpEvent<any>) => { },
                 (err: any) => {
-                    console.log('server error ==>');
-                    console.log(err);
                     if (err instanceof HttpErrorResponse) {
-                        const serverError = typeof err.error === 'string' ? JSON.parse(err.error) : err.error;
-                        this.broadcaster.broadcast('error', serverError);
-                        console.log('server error ==>');
-                        console.log(serverError);
+                        const response = err.error as ApiResponse;
+                        this.broadcaster.broadcast('error', response);
                     }
                 }
             ));

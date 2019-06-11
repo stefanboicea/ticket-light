@@ -57,11 +57,25 @@ namespace TicketLight.Api
                  tickets = (IQueryable<Ticket>)queryOptions.Filter.ApplyTo(tickets, new ODataQuerySettings());
                 totalCount = tickets.Count();
             }
+            else
+            {
+                totalCount = tickets.Count();
+            }
 
-            tickets = (IQueryable<Ticket>)queryOptions.ApplyTo(tickets);
+            if (queryOptions.Skip != null)
+            {
+                tickets = tickets.Skip(queryOptions.Skip.Value);
+            }
 
+            int maxPageSize = ConfigurationService.MaxPageSize;
+            if(queryOptions.Top != null && queryOptions.Top.Value < maxPageSize)
+            {
+                maxPageSize = queryOptions.Top.Value;
+            }
 
-            return StatusCode(StatusCodes.Status200OK, new ApiResponse(tickets, totalCount,10));
+            tickets = tickets.Take(maxPageSize);
+
+            return StatusCode(StatusCodes.Status200OK, new ApiResponse(tickets, totalCount,maxPageSize));
         }
 
 
