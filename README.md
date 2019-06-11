@@ -1,4 +1,4 @@
-# TicketLight - sample client & api for managing ticket objects 
+# TicketLight - sample app for managing a ticket resource 
 
 
 ### .NET API
