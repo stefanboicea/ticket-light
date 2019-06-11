@@ -1,13 +1,16 @@
 <a mat-list-item>
-    <mat-icon mat-list-icon color="primary">folder</mat-icon>
+  
+      <mat-icon mat-list-icon color="primary" *ngIf="ticket.priority === 0">folder</mat-icon>
+      <mat-icon mat-list-icon class="green" *ngIf="ticket.priority === 1">folder</mat-icon>
+      <mat-icon mat-list-icon class="red" *ngIf="ticket.priority === 2">folder</mat-icon>
 
-    <span mat-line class="claim-file"> {{ticket.key}}
+    
+
+    <span mat-line> {{ticket.key}}
     </span>
 
-    <mat-chip-list>
-      <mat-chip color="amber">Status</mat-chip>
-    </mat-chip-list>
-
+    <app-ticket-resolution [resolution]="ticket.resolution" ></app-ticket-resolution>
+    
     <p mat-line> {{ticket.summary}} </p>
     <p mat-line> </p>
 

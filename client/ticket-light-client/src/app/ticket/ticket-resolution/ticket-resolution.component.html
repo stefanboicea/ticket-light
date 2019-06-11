@@ -1,3 +1,7 @@
 <mat-chip-list>
-    <mat-chip color="amber">Status</mat-chip>
+    <mat-chip color="amber" *ngIf="resolution === 0">Backlog</mat-chip>
+    <mat-chip color="amber" *ngIf="resolution === 1">Pending</mat-chip>
+    <mat-chip color="amber" *ngIf="resolution === 2">InProgress</mat-chip>
+    <mat-chip color="amber" *ngIf="resolution === 3">Done</mat-chip>
+    <mat-chip color="amber" *ngIf="resolution === 4">Fixed</mat-chip>
   </mat-chip-list>
