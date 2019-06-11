@@ -54,13 +54,10 @@ namespace TicketLight.Api
 
             if (queryOptions.Filter != null)
             {
-                 tickets = (IQueryable<Ticket>)queryOptions.Filter.ApplyTo(tickets, new ODataQuerySettings());
-                totalCount = tickets.Count();
+                tickets = (IQueryable<Ticket>)queryOptions.Filter.ApplyTo(tickets, new ODataQuerySettings());
             }
-            else
-            {
-                totalCount = tickets.Count();
-            }
+
+            totalCount = tickets.Count();
 
             if (queryOptions.Skip != null)
             {
