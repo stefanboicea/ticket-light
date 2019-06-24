@@ -7,6 +7,7 @@ using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OData;
+using TicketLight.Core.Common;
 using TicketLight.Core.DataAccess;
 using TicketLight.Core.Entities;
 
@@ -20,10 +21,11 @@ namespace TicketLight.Api
     [Route("api/[controller]")]
     public class TicketsController : ODataController
     {
-        private readonly TicketsContext _ticketsContext;
-
-        public TicketsController(TicketsContext ticketsContext)
-            => _ticketsContext = ticketsContext;
+        private readonly TicketScope _scope;
+        public TicketsController(TicketScope scope)
+        {
+            this._scope = scope;
+        }
 
 
         /* 
@@ -33,7 +35,7 @@ namespace TicketLight.Api
              *  Perform server-driven pagination accordingly            
              * Cache items when possible: 
              * - Use a request param to have clients specify if cache flushing is needed
-             * - Have a server constant that forces clients to invalidate the cache             
+             * - use a server side timestamp for cache duration                        
             */
 
         [HttpGet]
@@ -45,34 +47,12 @@ namespace TicketLight.Api
             }
             catch (ODataException exception)
             {
-
                 return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(exception));
             }
 
-            int totalCount = 0;
-            IQueryable<Ticket> tickets = _ticketsContext.Tickets.AsQueryable();
+            QueryResponse<Ticket> searchResponse = new TicketRepository(_scope.Context).Search(queryOptions,AppSettings.Instance.MaxPageSize);
 
-            if (queryOptions.Filter != null)
-            {
-                tickets = (IQueryable<Ticket>)queryOptions.Filter.ApplyTo(tickets, new ODataQuerySettings());
-            }
-
-            totalCount = tickets.Count();
-
-            if (queryOptions.Skip != null)
-            {
-                tickets = tickets.Skip(queryOptions.Skip.Value);
-            }
-
-            int maxPageSize = ConfigurationService.MaxPageSize;
-            if(queryOptions.Top != null && queryOptions.Top.Value < maxPageSize)
-            {
-                maxPageSize = queryOptions.Top.Value;
-            }
-
-            tickets = tickets.Take(maxPageSize);
-
-            return StatusCode(StatusCodes.Status200OK, new ApiResponse(tickets, totalCount,maxPageSize));
+            return StatusCode(StatusCodes.Status200OK, new ApiResponse(searchResponse.Items, searchResponse.TotalCount, AppSettings.Instance.MaxPageSize));
         }
 
 
@@ -85,6 +65,7 @@ namespace TicketLight.Api
              * could return different status codes, depending on the situation:
              * - NotFound when , ofc not found 
              * - 5xx for server errors 
+             * - Get ticket from the repository            
             */
 
             var apiResponse = new ApiResponse();

@@ -4,7 +4,7 @@ using TicketLight.Core.Entities;
 
 namespace TicketLight.Core.DataAccess
 {
-    public class TicketsContext : DbContext
+    public class TicketContext : DbContext
     {
         public DbSet<Ticket> Tickets { get; set; }
 
@@ -15,7 +15,7 @@ namespace TicketLight.Core.DataAccess
             optionsBuilder.UseSqlite("Filename=./TicketLight.db");
         }
 
-        public TicketsContext(DbContextOptions<TicketsContext> options)
+        public TicketContext(DbContextOptions<TicketContext> options)
             : base(options) { }
 
 

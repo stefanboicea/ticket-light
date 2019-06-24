@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Api\" />
-    <Folder Include="Configuration\" />
     <Folder Include="Validation\" />
     <Folder Include="Validation\Attributes\" />
   </ItemGroup>

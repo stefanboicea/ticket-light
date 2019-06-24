@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
-using Microsoft.AspNet.OData.Routing.Conventions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
-using Microsoft.OData.UriParser;
 using TicketLight.Core.DataAccess;
 using TicketLight.Core.Entities;
+using TicketLight.Core.Services;
 
 namespace TicketLight.Api
 {
@@ -29,6 +21,7 @@ namespace TicketLight.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            TicketLight.Core.Services.ServiceProvider.Add<IConfiguration>(configuration);
         }
 
         public IConfiguration Configuration { get; }
@@ -36,7 +29,8 @@ namespace TicketLight.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TicketsContext>();
+            services.AddScoped<TicketScope>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddOData();
 
@@ -75,11 +69,9 @@ namespace TicketLight.Api
 
                 builder.MapODataServiceRoute("odata", "api", config => config
                         .AddService(Microsoft.OData.ServiceLifetime.Singleton, sp => GetEdmModel()));
-                        //.AddService<IEnumerable<IODataRoutingConvention>>(Microsoft.OData.ServiceLifetime.Singleton, sp => ODataRoutingConventions.CreateDefaultWithAttributeRouting("odata", (Microsoft.AspNetCore.Routing.IRouteBuilder)config)));
-                        //.AddService(Microsoft.OData.ServiceLifetime.Singleton, sp => new StringAsEnumResolver { EnableCaseInsensitive = true }));
-
-
             });
+
+            Core.Services.ServiceProvider.Add<ICachingService>(new CachingService());
         }
 
         private static IEdmModel GetEdmModel()

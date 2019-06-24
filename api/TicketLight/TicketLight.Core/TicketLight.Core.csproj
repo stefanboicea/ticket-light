@@ -7,9 +7,12 @@
   <ItemGroup>
     <Folder Include="DataAccess\" />
     <Folder Include="Entities\" />
+    <Folder Include="Services\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="DataAccess\TicketsSeedContext.config" />
