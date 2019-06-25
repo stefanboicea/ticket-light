@@ -2,8 +2,7 @@ import { Ticket } from './ticket';
 
 
 export interface ApiResponse { 
-    tickets?: Array<Ticket>;
-    ticket?: Ticket;
+    items?: Array<Ticket>;
     internalStatusCode?: number;
     message: string;
     totalCount?: number;

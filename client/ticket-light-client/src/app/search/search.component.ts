@@ -67,7 +67,7 @@ export class SearchComponent implements OnInit {
   pageChanged($event: PageEvent) {
     this.searchService.search(this.pageSize, $event.pageIndex * this.pageSize, this.filter)
       .subscribe(response => {
-        this.tickets = response.tickets;
+        this.tickets = response.items;
       },
         () => { },
         () => this.loading = false);
@@ -94,7 +94,7 @@ export class SearchComponent implements OnInit {
       .subscribe(response => {
         this.loading = false;
         this.pageSize = response.pageSize;
-        this.tickets = response.tickets;
+        this.tickets = response.items;
         this.totalCount = response.totalCount;
       },
         () => { },

@@ -16,7 +16,7 @@ namespace TicketLight.Api
     /// Tickets - for list queries 
     /// Message - status message, could extend to a collection of complex messages(multiple errors)
     /// </summary>
-    public class ApiResponse
+    public class ApiResponse<T> : QueryResponse<T>
     {
         public ApiResponse()
         {
@@ -29,18 +29,6 @@ namespace TicketLight.Api
             this.Message = exception.Message;
         }
 
-        public ApiResponse(IEnumerable tickets)
-        {
-            this.Tickets = tickets;
-        }
-
-        public ApiResponse(IEnumerable tickets,int count,int pageSize)
-        {
-            this.Tickets = tickets;
-            this.TotalCount = count;
-            this.PageSize = pageSize;
-        }
-
         public ApiResponse(ApiStatusCode internalStatusCode)
         {
             this.InternalStatusCode = internalStatusCode;
@@ -48,11 +36,6 @@ namespace TicketLight.Api
 
         public ApiStatusCode InternalStatusCode { get; set; }
 
-        public Ticket Ticket { get; set; }
-
-        public IEnumerable Tickets { get; set; }
-
-        public int TotalCount { get; set; }
 
         public int PageSize { get; set; }
 

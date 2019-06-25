@@ -47,12 +47,18 @@ namespace TicketLight.Api
             }
             catch (ODataException exception)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse(exception));
+                return StatusCode(StatusCodes.Status400BadRequest, new ApiResponse<Ticket>(exception));
             }
 
             QueryResponse<Ticket> searchResponse = new TicketRepository(_scope.Context).Search(queryOptions,AppSettings.Instance.MaxPageSize);
 
-            return StatusCode(StatusCodes.Status200OK, new ApiResponse(searchResponse.Items, searchResponse.TotalCount, AppSettings.Instance.MaxPageSize));
+            ApiResponse<Ticket> apiResponse = new ApiResponse<Ticket>();
+
+            apiResponse.Items = searchResponse.Items;
+            apiResponse.TotalCount = searchResponse.TotalCount;
+            apiResponse.PageSize = AppSettings.Instance.MaxPageSize;
+
+            return StatusCode(StatusCodes.Status200OK, apiResponse);
         }
 
 
@@ -68,7 +74,7 @@ namespace TicketLight.Api
              * - Get ticket from the repository            
             */
 
-            var apiResponse = new ApiResponse();
+            var apiResponse = new ApiResponse<Ticket>();
 
             return StatusCode(StatusCodes.Status200OK, apiResponse);
         }
@@ -81,8 +87,9 @@ namespace TicketLight.Api
         {
 
             // return different status codes, depending on the situation:
+            // Call repo method to update the ticket
 
-            var apiResponse = new ApiResponse();
+           var apiResponse = new ApiResponse<Ticket>();
 
             return Ok(apiResponse);
         }
